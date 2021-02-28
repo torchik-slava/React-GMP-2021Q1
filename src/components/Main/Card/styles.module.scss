@@ -1,0 +1,34 @@
+.card {
+  padding-bottom: 40px;
+  width: 350px;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 400;
+  list-style: none;
+  cursor: pointer;
+  p:first-of-type {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0 5px;
+  }
+}
+
+.image {
+  width: 100%;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 500;
+}
+
+.release {
+  font-size: 1.3rem;
+  padding: 5px 10px;
+  border: 1px solid #555;
+  border-radius: 5px;
+}
+
+.genres {
+  font-size: 1.4rem;
+  text-align: left;
+}

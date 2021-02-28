@@ -1,0 +1,48 @@
+.filterPanel {
+  display: flex;
+  padding-top: 15px;
+  border-bottom: 2px solid #555;
+  * {
+    font-size: 1.8rem;
+    color: #fff;
+    text-transform: uppercase;
+  }
+  ul {
+    display: flex;
+    list-style: none;
+  }
+  li {
+    margin-right: 20px;
+    padding-bottom: 20px;
+    cursor: pointer;
+    &.active {
+      box-shadow: 0 3px 0 0 #f65261;
+    }
+  }
+}
+
+.spacer {
+  flex-grow: 1;
+}
+
+.label {
+  padding-right: 20px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.selector {
+  position: relative;
+  padding-right: 20px;
+  cursor: pointer;
+  &::after {
+    content: "";
+    position: absolute;
+    top: 8px;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 5px 5px 0 5px;
+    border-color: #f65261 transparent transparent transparent;
+  }
+}
