@@ -1,4 +1,5 @@
 .card {
+  position: relative;
   padding-bottom: 40px;
   width: 350px;
   color: rgba(255, 255, 255, 0.6);
@@ -9,6 +10,21 @@
     display: flex;
     justify-content: space-between;
     padding: 10px 0 5px;
+  }
+  .btnWrapper {
+    display: none;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 42px;
+    height: 42px;    
+    border-radius: 50%;
+    background-color: #232323;
+  }
+  &:hover .btnWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 
@@ -31,4 +47,14 @@
 .genres {
   font-size: 1.4rem;
   text-align: left;
+}
+
+.btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;    
+  background-color: #232323;
+  background-image: radial-gradient(circle, #fff 2px, transparent 3px);
+  background-size: 100% 33.33%;
+  outline: none;
 }

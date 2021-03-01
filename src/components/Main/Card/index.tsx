@@ -1,9 +1,12 @@
 import React, { useState } from "react";
+import Button from "../../Button";
+import DropdownSelect from "../DropdownSelect";
 import styles from "./styles.module.scss";
 
 const defaultUrl = "https://i.ibb.co/hmtBmhz/no-poster.jpg";
 
 interface ICard {
+  id: number;
   title: string;
   posterPath: string;
   releaseDate: string;
@@ -11,6 +14,7 @@ interface ICard {
 }
 
 const Card = ({
+  id,
   title,
   posterPath,
   releaseDate,
@@ -20,10 +24,19 @@ const Card = ({
 
   return (
     <li className={styles.card}>
-      <img className={styles.image} src={url} onError={() => setUrl(defaultUrl)} alt="poster" />
+      <div className={styles.btnWrapper}>
+        <Button text="" extraClass={styles.btn} />
+      </div>
+      {id === 337167 && <DropdownSelect />}
+      <img
+        className={styles.image}
+        src={url}
+        onError={() => setUrl(defaultUrl)}
+        alt="poster"
+      />
       <p>
         <span className={styles.title}>{title}</span>
-        <span className={styles.release}>{releaseDate.split('-')[0]}</span>
+        <span className={styles.release}>{releaseDate.split("-")[0]}</span>
       </p>
       <p className={styles.genres}>{genres.join(", ")}</p>
     </li>
