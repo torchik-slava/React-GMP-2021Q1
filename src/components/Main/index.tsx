@@ -15,11 +15,7 @@ const Main = (): React.ReactElement => {
           {response.data.map((el) => (
             <Card
               key={el.id}
-              id={el.id}
-              title={el.title}
-              posterPath={el.poster_path}
-              releaseDate={el.release_date}
-              genres={el.genres}
+              data={el}
             />
           ))}
         </ul>
