@@ -1,0 +1,15 @@
+.main {
+  padding: 20px 0;  
+  background-color: #232323;
+}
+
+.contentWrapper {
+  margin: 0 auto;
+  max-width: 1152px;
+}
+
+.cardsList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}

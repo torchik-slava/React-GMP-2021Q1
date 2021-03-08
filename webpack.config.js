@@ -11,8 +11,9 @@ const isProduction = process.env.NODE_ENV === "production";
 module.exports = {
   mode: isProduction ? "production" : "development",
   context: path.resolve(__dirname, "src"),
-  entry: "./index.js",
+  entry: "./index.tsx",
   output: {
+    publicPath: '',
     path: path.resolve(__dirname, "dist"),
     filename: isProduction ? "[name].[hash].js" : "[name].js",
   },
@@ -26,12 +27,21 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.css$/i,
+        test: /\.s?css$/i,
         use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
       },
       {
         test: /\.(png|svg|jpe?g)$/i,
-        use: [{ loader: "file-loader" }],
+        use: ['file-loader']
+      },
+      {
+        test: /\.(ttf|woff|woff2|eot)$/,
+        use: ['file-loader']
+      },
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
       },
       {
         test: /\.jsx?$/,
@@ -52,11 +62,11 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
   ],
   resolve: {
-    extensions: [".js", "jsx"],
+    extensions: [".tsx", ".ts", ".js"],
   },
   devServer: {
     port: 3000,
     hot: isDevelopment,
   },
-  devtool: isDevelopment && "source-map",
+  devtool: isDevelopment && "inline-source-map",
 };
