@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Button from "../../Button";
 import Logo from "../../Logo";
 import Modal from "../../Modal";
-import styles from "./styles.module.scss";
+import styles from "./SubHeader.module.scss";
 
 const SubHeader = (): React.ReactElement => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -11,7 +11,7 @@ const SubHeader = (): React.ReactElement => {
       <Logo />
       <Button
         text="+ Add Movie"
-        extraClass={styles.btn}
+        className={styles.btn}
         onClick={() => setModalOpen(true)}
       />
       {isModalOpen && (

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./styles.module.scss";
+import styles from "./FilterPanel.module.scss";
 
 const tabs = ["All", "Documentary", "Comedy", "Horror", "Crime"];
 const sorts = [

@@ -1,9 +1,9 @@
 import React from "react";
-import styles from "./styles.module.scss";
 import response from "../../assets/response.json";
 import FilterPanel from "./FilterPanel";
 import ResultsPanel from "./ResultsPanel";
 import Card from "./Card";
+import styles from "./Main.module.scss";
 
 const Main = (): React.ReactElement => {
   return (

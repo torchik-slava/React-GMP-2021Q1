@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from "../../Modal";
-import { CardDataType } from "../Card";
-import styles from "./styles.module.scss";
+import { CardDataType } from "../Card/Card";
+import styles from "./DropdownSelect.module.scss";
 
 interface IDropdown {
   data: CardDataType;

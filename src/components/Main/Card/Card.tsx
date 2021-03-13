@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import Button from "../../Button";
-import Modal from "../../Modal";
 import DropdownSelect from "../DropdownSelect";
-import styles from "./styles.module.scss";
+import styles from "./Card.module.scss";
 
 const defaultUrl = "https://i.ibb.co/hmtBmhz/no-poster.jpg";
 
@@ -34,7 +33,7 @@ const Card = ({ data }: ICard): React.ReactElement => {
       <div className={styles.btnWrapper}>
         <Button
           text=""
-          extraClass={styles.btn}
+          className={styles.btn}
           onClick={() => setDropdownOpen(true)}
         />
       </div>

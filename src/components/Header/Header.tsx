@@ -1,7 +1,7 @@
 import React from "react";
 import Search from "./Search";
 import SubHeader from "./SubHeader";
-import styles from "./styles.module.scss";
+import styles from "./Header.module.scss";
 
 const Header = (): React.ReactElement => {
   return (
