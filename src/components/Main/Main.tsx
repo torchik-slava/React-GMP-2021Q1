@@ -5,23 +5,28 @@ import ResultsPanel from "./ResultsPanel";
 import Card from "./Card";
 import styles from "./Main.module.scss";
 
-const Main = (): React.ReactElement => {
+interface IMainProps {
+  onCardClick: (idx: number) => void;
+}
+
+const Main = React.memo(({onCardClick}: IMainProps): React.ReactElement => {
   return (
     <main className={styles.main}>
       <div className={styles.contentWrapper}>
         <FilterPanel />
         <ResultsPanel totalAmount={response.totalAmount}/>
         <ul className={styles.cardsList}>
-          {response.data.map((el) => (
+          {response.data.map((el, idx) => (
             <Card
               key={el.id}
               data={el}
+              onClick={() => {onCardClick(idx)}}
             />
           ))}
         </ul>
       </div>
     </main>
   );
-};
+});
 
 export default Main;

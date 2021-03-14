@@ -4,18 +4,35 @@ import Logo from "../../Logo";
 import Modal from "../../Modal";
 import styles from "./SubHeader.module.scss";
 
-const SubHeader = (): React.ReactElement => {
+interface ISubHeaderProps {
+  isShowSearch: boolean;
+  showSearch: () => void;
+}
+
+const SubHeader = ({
+  isShowSearch,
+  showSearch,
+}: ISubHeaderProps): React.ReactElement => {
   const [isModalOpen, setModalOpen] = useState(false);
   return (
     <div className={styles.subHeader}>
       <Logo />
-      <Button
-        text="+ Add Movie"
-        className={styles.btn}
-        onClick={() => setModalOpen(true)}
-      />
+      {isShowSearch ? (
+        <Button
+          text="+ Add Movie"
+          className={styles.addBtn}
+          onClick={() => setModalOpen(true)}
+        />
+      ) : (
+        <Button text="" className={styles.searchBtn} onClick={showSearch} />
+      )}
+
       {isModalOpen && (
-        <Modal modalTitle="Add Movie" modalType="Add" onClose={() => setModalOpen(false)} />
+        <Modal
+          modalTitle="Add Movie"
+          modalType="Add"
+          onClose={() => setModalOpen(false)}
+        />
       )}
     </div>
   );

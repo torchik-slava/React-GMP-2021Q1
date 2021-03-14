@@ -1,17 +1,17 @@
 .header {
   margin-bottom: 10px;
-  height: 400px;
-  background-image: url(./../../assets/images/headerBackground.jpg);
+  min-height: 400px;
+  background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
+    url(./../../assets/images/headerBackground.jpg);
   background-size: 150%;
   background-position: 50% 26%;
-  .overlay {
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.75);
-    .contentWrapper {
-      margin: 0 auto;
-      padding: 40px 0;
-      width: 1152px;
-    }
+  &.with_card_details {
+    background: linear-gradient(rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.95)),
+    url(./../../assets/images/headerBackground.jpg);
+  }
+  .contentWrapper {
+    margin: 0 auto;
+    padding: 40px 0;
+    width: 1152px;
   }
 }

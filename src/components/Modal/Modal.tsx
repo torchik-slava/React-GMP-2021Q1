@@ -78,8 +78,14 @@ class Modal extends React.Component<IModalProps, IModalState> {
 
   render() {
     return (
-      <div className={styles.overlay}>
-        <form className={styles.modal} autoComplete="off">
+      <div className={styles.overlay} onClick={this.props.onClose}>
+        <form
+          className={styles.modal}
+          autoComplete="off"
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
           <Button
             text={""}
             className={styles.closeBtn}
