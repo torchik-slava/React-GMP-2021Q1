@@ -25,7 +25,7 @@ const DropdownSelect = ({ data, onClose }: IDropdown): React.ReactElement => {
   };
 
   const dropdownRef = useRef(null);
-  useCloseOnOutSideClick(dropdownRef, onClose);
+  //useCloseOnOutSideClick(dropdownRef, onClose);
 
   return (
     <>
