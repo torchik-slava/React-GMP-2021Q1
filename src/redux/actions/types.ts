@@ -7,3 +7,5 @@ export const SET_GERNE_FILTER = "SET_GERNE_FILTER";
 export const CREATE_MOVIE = "CREATE_MOVIE";
 export const UPDATE_MOVIE = "UPDATE_MOVIE";
 export const DELETE_MOVIE = "DELETE_MOVIE";
+export const OPEN_MODAL = "OPEN_MODAL";
+export const CLOSE_MODAL = "CLOSE_MODAL";

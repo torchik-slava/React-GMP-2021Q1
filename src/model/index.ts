@@ -17,7 +17,11 @@ export interface IMoviesReducerState {
   gernes: GenresMapType;
 }
 
-interface ILoginReducerState {};
+export interface IModalReducerState {
+  isOpen: boolean;
+  modalType:"Add" | "Edit" | "Delete";
+  movieIdx?: number;
+};
 
 export type GenresMapType = { [key: string]: boolean };
 
@@ -48,5 +52,5 @@ export type ResponseType = {
 
 export interface AppState {
   movies: IMoviesReducerState;
-  login: ILoginReducerState;
+  modal: IModalReducerState;
 }

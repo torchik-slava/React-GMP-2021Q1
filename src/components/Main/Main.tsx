@@ -3,7 +3,7 @@ import FilterPanel from "./FilterPanel";
 import ResultsPanel from "./ResultsPanel";
 import Card from "./Card";
 import styles from "./Main.module.scss";
-import { GenresMapType, MovieDataType } from "../../model";
+import { AppState, GenresMapType, MovieDataType } from "../../model";
 
 interface IMainProps {
   movies: Array<MovieDataType>;
@@ -13,6 +13,7 @@ interface IMainProps {
   onCardClick: (idx: number) => void;
   selectGerne: (gerneName: string) => void;
   sortBy: (sortParam: { name: string; key: string }) => void;
+  onModalOpen: (modalType: AppState["modal"]["modalType"], movieIdx?: number) => void;
 }
 
 const Main = ({
@@ -23,6 +24,7 @@ const Main = ({
   selectGerne,
   sortBy,
   onCardClick,
+  onModalOpen,
 }: IMainProps): React.ReactElement => {
   return (
     <main className={styles.main}>
@@ -35,13 +37,15 @@ const Main = ({
         />
         <ResultsPanel totalAmount={totalAmount} />
         <ul className={styles.cardsList}>
-          {movies.map((el) => (
+          {movies.map((el, idx) => (
             <Card
               key={el.id}
+              movieIdx={idx}
               data={el}
               onClick={() => {
                 onCardClick(el.id);
               }}
+              onModalOpen={onModalOpen}
             />
           ))}
         </ul>
