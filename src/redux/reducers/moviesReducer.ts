@@ -6,6 +6,7 @@ const initialState: IMoviesReducerState = {
   movies: [],
   resultsAmount: 0,
   selectedMovieId: 0,
+  selectedMovie: null,
   currentSort: {
     name: "Not Selected",
     key: "",
@@ -31,6 +32,11 @@ export const moviesReducer = (state = initialState, action: ActionType) => {
         isLoading: false,
         movies: action.payload.data,
         resultsAmount: action.payload.totalAmount,
+      };
+    case "MOVIE_BY_ID_REQUEST_SUCCESS": 
+      return {
+        ...state,
+        selectedMovie: action.payload,
       };
     case "SET_SEARCH_VALUE":
       return { ...state, searchValue: action.payload };

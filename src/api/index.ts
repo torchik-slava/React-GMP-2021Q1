@@ -12,6 +12,8 @@ export const getMoviesBySearchQuery = (
     `${baseUrl}?search=${searchQuery}&sortBy=${sortParam}&filter=${filterParam}${baseParams}`
   ).then((response) => response.json());
 
+export const getMovieById = (id: string) => fetch(`${baseUrl}/${id}`).then((response) => response.json());
+
 export const createMovie = (data: MovieWithOutIdDataType) => fetch(baseUrl, {
   method: "POST",
   headers: { 'Content-Type': 'application/json' },

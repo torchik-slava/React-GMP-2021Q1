@@ -29,9 +29,15 @@
 }
 
 .btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 240px;
   height: 60px;
   font-size: 2rem;
   color: #fff;
+  border-radius: 5px;
   background-color: #f65261;
+  text-transform: uppercase;
+  text-decoration: none;
 }

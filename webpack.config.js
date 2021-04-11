@@ -13,7 +13,7 @@ module.exports = {
   context: path.resolve(__dirname, "src"),
   entry: "./index.tsx",
   output: {
-    publicPath: '',
+    publicPath: '/',
     path: path.resolve(__dirname, "dist"),
     filename: isProduction ? "[name].[hash].js" : "[name].js",
   },
@@ -65,6 +65,7 @@ module.exports = {
     extensions: [".tsx", ".ts", ".js"],
   },
   devServer: {
+    historyApiFallback: true,
     port: 3000,
     hot: isDevelopment,
   },

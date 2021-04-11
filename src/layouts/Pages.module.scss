@@ -1,0 +1,41 @@
+.header {
+  margin-bottom: 10px;
+  min-height: 400px;
+  background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
+    url(../assets/images/headerBackground.jpg);
+  background-size: 150%;
+  background-position: 50% 26%;
+  &.with_card_details {
+    background: linear-gradient(rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.95)),
+    url(../assets/images/headerBackground.jpg);
+  }
+  &ContentWrapper {
+    margin: 0 auto;
+    padding: 40px 0;
+    width: 1152px;
+  }
+}
+
+.main {
+  padding: 20px 0;
+  background-color: #232323;
+  &ContentWrapper {
+    margin: 0 auto;
+    max-width: 1152px;
+  }
+  &.with_not_found {
+    background-color: #191919;
+    min-height: calc(100vh - 70px);
+  }
+  &.with_no_movie {
+    min-height: calc(100vh - 480px);
+    p {
+      padding: 40px;
+      min-height: 100%;
+      font-size: 4rem;
+      font-weight: 300;
+      color: #fff;
+      text-align: center;
+    }
+  }
+}

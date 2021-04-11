@@ -1,15 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AppState } from "../../../model";
-import { requestMoviesBySearch, setSearchValue } from "../../../redux/actions";
-import Button from "../../Button";
+import { Link } from "react-router-dom";
+import { AppState } from "../../model";
+import { setSearchValue } from "../../redux/actions";
 import styles from "./Search.module.scss";
 
 const Search = (): React.ReactElement => {
   const dispatch = useDispatch();
   const searchValue = useSelector((state: AppState) => state.movies.searchValue);
   const changeSearchValue = (event: React.ChangeEvent<HTMLInputElement>) => dispatch(setSearchValue(event.target.value));
-  const searchMovies = () => dispatch(requestMoviesBySearch());
 
   return (
     <div className={styles.search}>
@@ -22,7 +21,12 @@ const Search = (): React.ReactElement => {
           value={searchValue}
           onChange={changeSearchValue}
         />
-        <Button text="Search" className={styles.btn} onClick={searchMovies} />
+        <Link
+          className={styles.btn}
+          to={{ pathname: "/search", search: `?${searchValue}` }}
+        >
+          Search
+        </Link>
       </div>
     </div>
   );

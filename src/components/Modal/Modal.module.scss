@@ -9,7 +9,7 @@
   justify-content: space-between;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.75);
-  overflow: scroll;
+  overflow: auto;
   z-index: 2;
   &::before {
     content: "";
