@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./styles.module.scss";
+import styles from "./ResultsPanel.module.scss";
 
 interface IResultsPanel {
   totalAmount: number;

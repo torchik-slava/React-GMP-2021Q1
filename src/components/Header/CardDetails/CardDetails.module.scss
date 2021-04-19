@@ -1,0 +1,51 @@
+.section {
+  display: flex;
+  padding: 20px 0;
+}
+
+.poster {
+  width: 25%;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  padding: 35px 75px;
+  color: #fff;
+  .title {
+    display: flex;
+    align-items: center;
+    font-size: 4rem;
+  }
+  .vote {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 40px;
+    width: 55px;
+    height: 55px;
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: limegreen;
+    border: 1px solid limegreen;
+    border-radius: 50%;
+  }
+  .tagline {
+    padding: 15px 0;
+    font-size: 1.4rem;
+  }
+  .date_and_time {
+    padding: 15px 0;
+    font-size: 2.5rem;
+    color: #f65261;
+    span:last-child {
+      margin-left: 20px;
+      font-size: inherit;
+    }
+  }
+  .overview {
+    padding: 15px 0;
+    font-size: 1.6rem;
+    line-height: 2.2rem;
+  }
+}

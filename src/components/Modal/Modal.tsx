@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import React from "react";
 import Button from "../Button";
-import styles from "./styles.module.scss";
+import styles from "./Modal.module.scss";
 
 interface IModalProps {
   modalTitle: string;
@@ -78,11 +78,17 @@ class Modal extends React.Component<IModalProps, IModalState> {
 
   render() {
     return (
-      <div className={styles.overlay}>
-        <form className={styles.modal} autoComplete="off">
+      <div className={styles.overlay} onClick={this.props.onClose}>
+        <form
+          className={styles.modal}
+          autoComplete="off"
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
           <Button
             text={""}
-            extraClass={styles.closeBtn}
+            className={styles.closeBtn}
             onClick={this.props.onClose}
           />
           <h2 className={styles.h2}>{this.props.modalTitle}</h2>
@@ -193,12 +199,12 @@ class Modal extends React.Component<IModalProps, IModalState> {
               </label>
               <Button
                 text={"Reset"}
-                extraClass={styles.resetBtn}
+                className={styles.resetBtn}
                 onClick={(e) => this.resetForm(e)}
               />
               <Button
                 text={"Submit"}
-                extraClass={styles.submitBtn}
+                className={styles.submitBtn}
                 onClick={this.props.onClose}
               />
             </>
@@ -210,7 +216,7 @@ class Modal extends React.Component<IModalProps, IModalState> {
               </p>
               <Button
                 text={"Confirm"}
-                extraClass={styles.submitBtn}
+                className={styles.submitBtn}
                 onClick={this.props.onClose}
               />
             </>
