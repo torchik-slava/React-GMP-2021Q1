@@ -1,19 +1,27 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import useCloseOnOutSideClick from "../../../hooks/useCloseOnOutSideClick";
+import { GenresMapType } from "../../../model";
 import styles from "./FilterPanel.module.scss";
 
-const tabs = ["All", "Documentary", "Comedy", "Horror", "Crime"];
+interface IFilterPanelProps {
+  gernesMap: GenresMapType;
+  currentSortName: string;
+  selectGerne: (gerneName: string) => void;
+  sortBy: (sortParam: { name: string; key: string }) => void;
+}
+
 const sorts = [
-  "Release Date",
-  "Vote Average",
-  "Vote Count",
-  "Budget",
-  "Revenue",
-  "Runtime",
+  { name: "Not selected", key: "" },
+  { name: "Release Date", key: "release_date" },
+  { name: "Vote Average", key: "vote_average" },
 ];
 
-const FilterPanel = () => {
-  const [currentSort, setcurrentSort] = useState("Release Date");
+const FilterPanel = ({
+  gernesMap,
+  currentSortName,
+  selectGerne,
+  sortBy,
+}: IFilterPanelProps): React.ReactElement => {
   const [isSelectorOpen, setIsSelectorOpen] = useState(false);
   const selectorRef = useRef(null);
   useCloseOnOutSideClick(selectorRef, () => setIsSelectorOpen(false));
@@ -21,9 +29,13 @@ const FilterPanel = () => {
   return (
     <div className={styles.filterPanel}>
       <ul>
-        {tabs.map((el, idx) => (
-          <li key={idx} className={idx === 0 ? styles.active : undefined}>
-            {el}
+        {Object.entries(gernesMap).map((gerne: [string, boolean], idx) => (
+          <li
+            key={idx}
+            className={gerne[1] ? styles.active : undefined}
+            onClick={() => selectGerne(gerne[0])}
+          >
+            {gerne[0]}
           </li>
         ))}
       </ul>
@@ -34,7 +46,7 @@ const FilterPanel = () => {
           className={styles.selector}
           onClick={() => setIsSelectorOpen((isSelectorOpen) => !isSelectorOpen)}
         >
-          {currentSort}
+          {currentSortName}
         </span>
         {isSelectorOpen && (
           <ul className={styles.optionList} ref={selectorRef}>
@@ -42,11 +54,11 @@ const FilterPanel = () => {
               <li
                 key={idx}
                 onClick={() => {
-                  setcurrentSort(el);
+                  sortBy(el);
                   setIsSelectorOpen(false);
                 }}
               >
-                {el}
+                {el.name}
               </li>
             ))}
           </ul>
