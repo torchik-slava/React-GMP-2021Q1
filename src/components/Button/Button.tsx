@@ -4,7 +4,7 @@ import styles from "./Button.module.scss";
 
 interface IButton {
   text: string;
-  className: any;
+  className?: any;
   type?: "button" | "submit" | "reset";
   onClick?: (e?: any) => void;
 }

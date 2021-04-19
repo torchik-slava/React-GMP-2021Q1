@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Footer renders Footer correctly 1`] = `
+<DocumentFragment>
+  <footer
+    class="footer"
+  >
+    <span
+      class="logo"
+    >
+      <span
+        class="bold"
+      >
+        netflix
+      </span>
+      roulette
+    </span>
+  </footer>
+</DocumentFragment>
+`;

@@ -1,6 +1,6 @@
 import { ActionType, IModalReducerState } from "../../model";
 
-const initialState: IModalReducerState = {
+export const initialState: IModalReducerState = {
   modalType: null,
   isOpen: false,
   movieIdx: null,
