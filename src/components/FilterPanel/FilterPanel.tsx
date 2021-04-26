@@ -1,14 +1,9 @@
 import React, { useRef, useState } from "react";
-import useCloseOnOutSideClick from "../../../hooks/useCloseOnOutSideClick";
-import { GenresMapType } from "../../../model";
+import { useDispatch, useSelector } from "react-redux";
+import useCloseOnOutSideClick from "../../hooks/useCloseOnOutSideClick";
+import { AppState } from "../../model";
+import { setCurrentSort, setGerneFilter } from "../../redux/actions";
 import styles from "./FilterPanel.module.scss";
-
-interface IFilterPanelProps {
-  gernesMap: GenresMapType;
-  currentSortName: string;
-  selectGerne: (gerneName: string) => void;
-  sortBy: (sortParam: { name: string; key: string }) => void;
-}
 
 const sorts = [
   { name: "Not selected", key: "" },
@@ -16,12 +11,14 @@ const sorts = [
   { name: "Vote Average", key: "vote_average" },
 ];
 
-const FilterPanel = ({
-  gernesMap,
-  currentSortName,
-  selectGerne,
-  sortBy,
-}: IFilterPanelProps): React.ReactElement => {
+const FilterPanel = () => {
+  const currentSortName = useSelector((state: AppState) => state.movies.currentSort.name);
+  const gernesMap = useSelector((state: AppState) => state.movies.gernes);
+
+  const dispatch = useDispatch();
+  const sortBy = (sortParam: { name: string; key: string }) => dispatch(setCurrentSort(sortParam));
+  const selectGerne =(gerneName: string) => dispatch(setGerneFilter(gerneName));
+
   const [isSelectorOpen, setIsSelectorOpen] = useState(false);
   const selectorRef = useRef(null);
   useCloseOnOutSideClick(selectorRef, () => setIsSelectorOpen(false));
