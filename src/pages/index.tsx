@@ -4,25 +4,24 @@ import Footer from "../components/Footer";
 import Modal from "../components/Modal";
 import ErrorBoundary from "../components/ErrorBoundary";
 import styles from "./Pages.module.scss";
+import Search from "../components/Search";
 import SubHeader from "../components/SubHeader";
-import Main from "../components/Main";
-import CardDetails from "../components/CardDetails";
 import classNames from "classnames";
 
-const MovieDetailsPage = () => {
+const HomePage = () => {
   return (
     <>
-      <header className={classNames(styles.header, styles.with_card_details)}>
+      <header className={styles.header}>
         <div className={styles.headerContentWrapper}>
-          <SubHeader showShearchBtnRequired/>
-          <CardDetails />
+          <SubHeader addMovieBtnRequired/>
+          <Search />
         </div>
       </header>
       <ErrorBoundary>
-        <main className={styles.main}>
+        <main className={classNames(styles.main, styles.with_no_movie)}>
           <div className={styles.mainContentWrapper}>
             <FilterPanel />
-            <Main />
+            <p>No Movie Found</p>
           </div>
         </main>
       </ErrorBoundary>
@@ -32,4 +31,4 @@ const MovieDetailsPage = () => {
   );
 };
 
-export default MovieDetailsPage;
+export default HomePage;

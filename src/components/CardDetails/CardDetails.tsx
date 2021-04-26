@@ -1,18 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styles from "./CardDetails.module.scss";
 import Poster from "../Poster";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { AppState } from "../../model";
-import { useParams } from "react-router-dom";
-import { requestMovieById } from "../../redux/actions";
 
 const CardDetails = () => {
-  const { id }: { id: string } = useParams();
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(requestMovieById(Number(id)));
-  }, [id]);
-
   const { selectedMovie: data } = useSelector((state: AppState) => state.movies);
 
   return (

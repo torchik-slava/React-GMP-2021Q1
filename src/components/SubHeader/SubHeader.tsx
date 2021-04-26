@@ -1,6 +1,6 @@
+import { useRouter } from "next/router";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 import { AppState } from "../../model";
 import { openModal } from "../../redux/actions";
 import Button from "../Button";
@@ -17,9 +17,9 @@ const SubHeader = ({
   showShearchBtnRequired,
 }: ISubHeaderProps): React.ReactElement => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const router = useRouter();
   const { searchValue } = useSelector((state: AppState) => state.movies);
-  const showSearch = () => history.push(`/search?${searchValue}`);
+  const showSearch = () => router.push(`/search?q=${searchValue}`, undefined, { shallow: true });
   const onModalOpen = (modalType: AppState["modal"]["modalType"]) => dispatch(openModal(modalType));
 
   return (

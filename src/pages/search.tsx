@@ -6,9 +6,12 @@ import ErrorBoundary from "../components/ErrorBoundary";
 import styles from "./Pages.module.scss";
 import Search from "../components/Search";
 import SubHeader from "../components/SubHeader";
-import classNames from "classnames";
+import Main from "../components/Main";
+import { SagaStore, wrapper } from "../redux/configureStore";
+import { END } from "redux-saga";
+import { requestMoviesBySearch, setSearchValue } from "../redux/actions";
 
-const HomePage = () => {
+const SearchResultPage = () => {
   return (
     <>
       <header className={styles.header}>
@@ -18,10 +21,10 @@ const HomePage = () => {
         </div>
       </header>
       <ErrorBoundary>
-        <main className={classNames(styles.main, styles.with_no_movie)}>
+        <main className={styles.main}>
           <div className={styles.mainContentWrapper}>
             <FilterPanel />
-            <p>No Movie Found</p>
+            <Main />
           </div>
         </main>
       </ErrorBoundary>
@@ -31,4 +34,14 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export const getServerSideProps = wrapper.getServerSideProps(
+  async ({ store, req, res, ...etc }) => {
+    const query  = req.url.slice(10);
+    store.dispatch(setSearchValue(decodeURI(query)));
+    store.dispatch(requestMoviesBySearch());
+    store.dispatch(END);
+    await (store as SagaStore).sagaTask.toPromise();
+  }
+);
+
+export default SearchResultPage;

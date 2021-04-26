@@ -1,14 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import img404 from "../../assets/images/notFound.jpg";
+import Link from 'next/link';
 import styles from "./NotFound.module.scss";
 
 const NotFoundComponent = () => {
   return (
     <>
 			<h1 className={styles.h1}>Page Not Found</h1>
-      <img src={img404} className={styles.img} alt="not found pic"/>
-			<Link to="/" className={styles.navBtn}>Go back to home</Link>
+      <img src="images/notFound.jpg" className={styles.img} alt="not found pic"/>
+			<Link href="/"><a className={styles.navBtn}>Go back to home</a></Link>
     </>
   );
 };
