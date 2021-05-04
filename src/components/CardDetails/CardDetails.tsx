@@ -1,25 +1,31 @@
 import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import styles from "./CardDetails.module.scss";
 import Poster from "../Poster";
-import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../model";
-import { useParams } from "react-router-dom";
 import { requestMovieById } from "../../redux/actions";
 
-const CardDetails = () => {
+const CardDetails = (): React.ReactElement => {
   const { id }: { id: string } = useParams();
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(requestMovieById(Number(id)));
-  }, [id]);
+  }, [dispatch, id]);
 
-  const { selectedMovie: data } = useSelector((state: AppState) => state.movies);
+  const { selectedMovie: data } = useSelector(
+    (state: AppState) => state.movies
+  );
 
   return (
     <section className={styles.section}>
       {data && (
         <>
-          <Poster className={styles.poster} posterPath={data.poster_path} />
+          <Poster
+            className={styles.poster}
+            posterPath={data.poster_path}
+            width=""
+          />
           <div className={styles.details}>
             <h2 className={styles.title}>
               {data.title}

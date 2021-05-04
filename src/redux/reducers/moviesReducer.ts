@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 import { ActionType, IMoviesReducerState } from "../../model";
 
 export const initialState: IMoviesReducerState = {
@@ -22,7 +23,10 @@ export const initialState: IMoviesReducerState = {
   },
 };
 
-export const moviesReducer = (state = initialState, action: ActionType) => {
+export const moviesReducer = (
+  state = initialState,
+  action: ActionType
+): IMoviesReducerState => {
   switch (action.type) {
     case "REQUEST_MOVIES_BY_SEARCH":
       return { ...state, isLoading: true };
@@ -33,7 +37,7 @@ export const moviesReducer = (state = initialState, action: ActionType) => {
         movies: action.payload.data,
         resultsAmount: action.payload.totalAmount,
       };
-    case "MOVIE_BY_ID_REQUEST_SUCCESS": 
+    case "MOVIE_BY_ID_REQUEST_SUCCESS":
       return {
         ...state,
         selectedMovie: action.payload,

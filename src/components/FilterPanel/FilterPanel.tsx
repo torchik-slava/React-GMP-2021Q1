@@ -11,13 +11,17 @@ const sorts = [
   { name: "Vote Average", key: "vote_average" },
 ];
 
-const FilterPanel = () => {
-  const currentSortName = useSelector((state: AppState) => state.movies.currentSort.name);
+const FilterPanel = (): React.ReactElement => {
+  const currentSortName = useSelector(
+    (state: AppState) => state.movies.currentSort.name
+  );
   const gernesMap = useSelector((state: AppState) => state.movies.gernes);
 
   const dispatch = useDispatch();
-  const sortBy = (sortParam: { name: string; key: string }) => dispatch(setCurrentSort(sortParam));
-  const selectGerne =(gerneName: string) => dispatch(setGerneFilter(gerneName));
+  const sortBy = (sortParam: { name: string; key: string }) =>
+    dispatch(setCurrentSort(sortParam));
+  const selectGerne = (gerneName: string) =>
+    dispatch(setGerneFilter(gerneName));
 
   const [isSelectorOpen, setIsSelectorOpen] = useState(false);
   const selectorRef = useRef(null);
@@ -26,9 +30,9 @@ const FilterPanel = () => {
   return (
     <div className={styles.filterPanel}>
       <ul>
-        {Object.entries(gernesMap).map((gerne: [string, boolean], idx) => (
+        {Object.entries(gernesMap).map((gerne: [string, boolean]) => (
           <li
-            key={idx}
+            key={`${gerne[0]}`}
             className={gerne[1] ? styles.active : undefined}
             onClick={() => selectGerne(gerne[0])}
           >
@@ -36,20 +40,20 @@ const FilterPanel = () => {
           </li>
         ))}
       </ul>
-      <div className={styles.spacer}></div>
+      <div className={styles.spacer} />
       <div>
         <span className={styles.label}>Sort by</span>
         <span
           className={styles.selector}
-          onClick={() => setIsSelectorOpen((isSelectorOpen) => !isSelectorOpen)}
+          onClick={() => setIsSelectorOpen((flag) => !flag)}
         >
           {currentSortName}
         </span>
         {isSelectorOpen && (
           <ul className={styles.optionList} ref={selectorRef}>
-            {sorts.map((el, idx) => (
+            {sorts.map((el) => (
               <li
-                key={idx}
+                key={el.key}
                 onClick={() => {
                   sortBy(el);
                   setIsSelectorOpen(false);

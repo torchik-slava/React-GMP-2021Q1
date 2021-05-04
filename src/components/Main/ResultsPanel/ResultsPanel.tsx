@@ -5,6 +5,7 @@ interface IResultsPanel {
   totalAmount: number;
 }
 
+// PATTERN: Stateless function
 const ResultsPanel = ({ totalAmount }: IResultsPanel): React.ReactElement => {
   return (
     <p className={styles.resultsPanel}>

@@ -1,9 +1,9 @@
 import React from "react";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
+import userEvent from "@testing-library/user-event";
 import Modal from "./Modal";
 import mockResponse from "../../assets/response.json";
-import userEvent from "@testing-library/user-event";
 import configureStore from "../../redux/configureStore";
 import { moviesRequestSuccess, openModal } from "../../redux/actions";
 
@@ -47,7 +47,7 @@ describe("Modal", () => {
     userEvent.click(option);
     expect(gerneInput.value).not.toBe("");
     userEvent.click(option);
-    expect(gerneInput.value).toBe("");    
+    expect(gerneInput.value).toBe("");
     userEvent.type(gerneInput, "some text");
     expect(gerneInput.value).toBe("");
   });
@@ -65,8 +65,13 @@ describe("Modal", () => {
 
     userEvent.type(screen.getByLabelText(/title/i), "Some title");
     userEvent.click(screen.getByLabelText(/release/i));
-    fireEvent.change(screen.getByLabelText(/release/i), { target: { value: "2021-04-12" } });
-    userEvent.type(screen.getByLabelText(/url/i), "https://image.tmdb.org/t/p/w500/sM33SANp9z6rXW8Itn7NnG1GOEs.jpg");
+    fireEvent.change(screen.getByLabelText(/release/i), {
+      target: { value: "2021-04-12" },
+    });
+    userEvent.type(
+      screen.getByLabelText(/url/i),
+      "https://image.tmdb.org/t/p/w500/sM33SANp9z6rXW8Itn7NnG1GOEs.jpg"
+    );
     userEvent.click(screen.getByLabelText(/Genre/));
     userEvent.click(screen.getAllByRole("checkbox")[0]);
     userEvent.type(screen.getByLabelText(/tagline/i), "Some tagline");
@@ -93,7 +98,7 @@ describe("Modal", () => {
     await waitFor(() => expect(store.dispatch).toHaveBeenCalledTimes(4));
   });
 
-  it("renders Delete Modal correctly ", async () => {
+  it("renders Delete Modal correctly", async () => {
     const { store } = setUp();
     store.dispatch(moviesRequestSuccess(mockResponse));
     store.dispatch(openModal("Delete", 0));

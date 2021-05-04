@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from "react";
 
 interface Props {
@@ -14,23 +15,25 @@ class ErrorBoundary extends React.Component<Props, State> {
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(error: Error): State {
+  static getDerivedStateFromError(): State {
     return { hasError: true };
   }
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
     console.error("Uncaught error:", error, errorInfo);
   }
 
-  render() {
-    if (this.state.hasError) {
+  render(): React.ReactNode {
+    const { hasError } = this.state;
+    const { children } = this.props;
+    if (hasError) {
       return (
         <h1 style={{ fontSize: "3rem", color: "white", textAlign: "center" }}>
           Sorry... Something went wrong!
         </h1>
       );
     }
-    return this.props.children;
+    return children;
   }
 }
 

@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-cycle
 import * as actions from "../redux/actions";
 
 type InferValueTypes<T> = T extends { [key: string]: infer U } ? U : never;
@@ -20,12 +21,11 @@ export interface IMoviesReducerState {
 
 export interface IModalReducerState {
   isOpen: boolean;
-  modalType:"Add" | "Edit" | "Delete";
+  modalType: "Add" | "Edit" | "Delete";
   movieIdx?: number;
-};
+}
 
 export type GenresMapType = { [key: string]: boolean };
-
 
 export type MovieDataType = {
   id: number;

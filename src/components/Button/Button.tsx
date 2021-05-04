@@ -1,17 +1,28 @@
-import React from "react";
+import React, { MouseEventHandler } from "react";
 import classNames from "classnames";
 import styles from "./Button.module.scss";
 
 interface IButton {
   text: string;
-  className?: any;
+  className?: string;
   type?: "button" | "submit" | "reset";
-  onClick?: (e?: any) => void;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
-const Button = ({ text, className, type, onClick }: IButton): React.ReactElement => {
+// PATTERN: Proxy component, Style component
+const Button = ({
+  text,
+  className,
+  type = "button",
+  onClick,
+}: IButton): React.ReactElement => {
   return (
-    <button className={classNames(styles.button, className)} type={type || "button"} onClick={onClick}>
+    <button
+      className={classNames(styles.button, className && className)}
+      // eslint-disable-next-line react/button-has-type
+      type={type || "button"}
+      onClick={onClick}
+    >
       {text}
     </button>
   );

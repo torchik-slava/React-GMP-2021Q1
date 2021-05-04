@@ -24,10 +24,18 @@ interface ICard {
   movieIdx: number;
   data: CardDataType;
   onClick: () => void;
-  onModalOpen: (modalType: AppState["modal"]["modalType"], movieIdx?: number) => void;
+  onModalOpen: (
+    modalType: AppState["modal"]["modalType"],
+    movieIdx?: number
+  ) => void;
 }
 
-const Card = ({ data, movieIdx, onClick, onModalOpen }: ICard): React.ReactElement => {
+const Card = ({
+  data,
+  movieIdx,
+  onClick,
+  onModalOpen,
+}: ICard): React.ReactElement => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   return (
     <li className={styles.card} onClick={onClick}>
@@ -37,17 +45,22 @@ const Card = ({ data, movieIdx, onClick, onModalOpen }: ICard): React.ReactEleme
           className={styles.btn}
           onClick={(event) => {
             event.stopPropagation();
-            setDropdownOpen(true)
+            setDropdownOpen(true);
           }}
         />
       </div>
-      {isDropdownOpen && 
+      {isDropdownOpen && (
         <DropdownSelect
           movieIdx={movieIdx}
           onClose={() => setDropdownOpen(false)}
           onModalOpen={onModalOpen}
-        />}
-      <Poster className={styles.image} posterPath={data.poster_path} />
+        />
+      )}
+      <Poster
+        className={styles.image}
+        posterPath={data.poster_path}
+        width="350"
+      />
       <p>
         <span className={styles.title}>{data.title}</span>
         <span className={styles.release}>

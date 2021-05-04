@@ -1,19 +1,22 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import HomePage from "./layouts/HomePage";
-import MovieDetailsPage from "./layouts/MovieDetailsPage";
-import NotFoundPage from "./layouts/NotFoundPage";
-import SearchResultPage from "./layouts/SearchResultPage";
 
-const App = () => {
+const HomePage = React.lazy(() => import("./layouts/HomePage"));
+const MovieDetailsPage = React.lazy(() => import("./layouts/MovieDetailsPage"));
+const NotFoundPage = React.lazy(() => import("./layouts/NotFoundPage"));
+const SearchResultPage = React.lazy(() => import("./layouts/SearchResultPage"));
+
+const App = (): React.ReactElement => {
   return (
     <Router>
-      <Switch>
-        <Route path="/" exact component={HomePage} />
-        <Route path="/search" component={SearchResultPage} />
-        <Route path="/film/:id" component={MovieDetailsPage} />
-        <Route component={NotFoundPage} />
-      </Switch>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Switch>
+          <Route path="/" exact component={HomePage} />
+          <Route path="/search" component={SearchResultPage} />
+          <Route path="/film/:id" component={MovieDetailsPage} />
+          <Route component={NotFoundPage} />
+        </Switch>
+      </Suspense>
     </Router>
   );
 };
