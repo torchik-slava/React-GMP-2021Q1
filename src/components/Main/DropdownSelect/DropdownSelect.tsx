@@ -1,47 +1,26 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import useCloseOnOutSideClick from "../../../hooks/useCloseOnOutSideClick";
+import { AppState } from "../../../model";
 import Button from "../../Button";
-import Modal from "../../Modal";
-import { CardDataType } from "../Card/Card";
 import styles from "./DropdownSelect.module.scss";
 
 interface IDropdown {
-  data: CardDataType;
+  movieIdx: number;
   onClose: () => void;
+  onModalOpen: (modalType: AppState["modal"]["modalType"], movieIdx?: number) => void;
 }
 
-const DropdownSelect = ({ data, onClose }: IDropdown): React.ReactElement => {
-  const [isModalOpen, setModalOpen] = useState(false);
-  const [modalType, setModalType] = useState<"Edit" | "Delete"  | "">("");
-
-  const handleEdit = () => {
-    setModalOpen(true);
-    setModalType("Edit");
-  };
-
-  const handleDelete = () => {
-    setModalOpen(true);
-    setModalType("Delete");
-  };
-
+const DropdownSelect = ({ movieIdx, onClose, onModalOpen }: IDropdown): React.ReactElement => {
   const dropdownRef = useRef(null);
-  //useCloseOnOutSideClick(dropdownRef, onClose);
+  useCloseOnOutSideClick(dropdownRef, onClose);
 
   return (
     <>
       <div className={styles.select} ref={dropdownRef} onClick={(e) => e.stopPropagation()}>
         <Button text="" className={styles.closeBtn} onClick={onClose} />
-        <Button text="Edit" className={styles.selectBtn} onClick={handleEdit} />
-        <Button text="Delete" className={styles.selectBtn} onClick={handleDelete} />
+        <Button text="Edit" className={styles.selectBtn} onClick={() => onModalOpen("Edit", movieIdx)} />
+        <Button text="Delete" className={styles.selectBtn} onClick={() => onModalOpen("Delete", movieIdx)} />
       </div>
-      {isModalOpen && (
-        <Modal
-          modalTitle={`${modalType} Movie`}
-          data={data}
-          modalType={modalType}
-          onClose={() => setModalOpen(false)}
-        />
-      )}
     </>
   );
 };

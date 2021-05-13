@@ -31,6 +31,10 @@
   color: #fff;
   background-color: #232323;
   border-radius: 5px;
+  div:global(.error) {
+    color: #f65261;
+    font-weight: 900;
+  }
 }
 
 .h2 {

@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
 import { moviesReducer } from "./moviesReducer";
-import { loginReducer } from "./loginReducer";
+import { modalReducer } from "./modalReducer";
 
 export const rootReducer = combineReducers({
   movies: moviesReducer,
-  login: loginReducer,
+  modal: modalReducer,
 });

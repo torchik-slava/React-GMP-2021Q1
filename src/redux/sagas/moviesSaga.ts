@@ -24,6 +24,7 @@ function* getMoviesSaga() {
 function* createMovieSaga(action: any) {
   try {
     const data = action.payload;
+    delete data.id;
     yield call(createMovie, data);
     yield getMoviesSaga();
   } catch (error) {

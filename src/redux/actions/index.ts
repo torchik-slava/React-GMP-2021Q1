@@ -1,4 +1,4 @@
-import { MovieDataType, MovieWithOutIdDataType, ResponseType } from "../../model";
+import { AppState, MovieDataType, MovieWithOutIdDataType, ResponseType } from "../../model";
 import * as types from "./types";
 
 export const requestMoviesBySearch = () => ({
@@ -44,4 +44,13 @@ export const updateMovie = (data: MovieDataType) => ({
 export const deleteMovie = (id: number) => ({
   type: types.DELETE_MOVIE,
   payload: id,
+} as const);
+
+export const openModal = (modalType: AppState["modal"]["modalType"], movieIdx?: number) => ({
+  type: types.OPEN_MODAL,
+  payload: { modalType, movieIdx }
+} as const);
+
+export const closeModal = () => ({
+  type: types.CLOSE_MODAL,
 } as const);

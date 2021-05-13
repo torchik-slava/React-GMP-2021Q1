@@ -1,271 +1,152 @@
-import classNames from "classnames";
-import React from "react";
-import { connect } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Form, Formik, FormikProps } from "formik";
+import * as Yup from 'yup';
 import { MovieDataType, MovieWithOutIdDataType } from "../../model";
 import { createMovie, deleteMovie, updateMovie } from "../../redux/actions";
 import Button from "../Button";
 import styles from "./Modal.module.scss";
+import FormInputField from "./components/FormInputField";
+import CheckboxSelect from "./components/CheckboxSelect";
 
 interface IModalProps {
   modalTitle: string;
   data?: MovieDataType;
   modalType: "Add" | "Edit" | "Delete" | "";
   onClose: () => void;
-  deleteMovie: (id: number) => void;
-  updateMovie: (data: MovieDataType) => void;
-  createMovie: (data: MovieWithOutIdDataType) => void;
 }
 
-interface IModalState {
+interface Values {
+  id: number;
   title: string;
   release_date: string;
   poster_path: string;
   genres: Array<string>;
+  tagline: string;
   overview: string;
-  runtime: number | "";
-  isSelectorOpen: boolean;
+  runtime: number;
+  vote_average: number;
+  vote_count: number;
+  budget: number;
+  revenue: number;
 }
 
-const allCategories = ["Documentary", "Comedy", "Action", "Horror", "Crime"];
+const ValidationSchema = Yup.object().shape({
+  id: Yup.number(),
+  title: Yup.string().required('Required field'),
+  release_date: Yup.date().required('Required field'),
+  poster_path: Yup.string().required('Required field').url('Must be correct url'),
+  genres: Yup.array().of(Yup.string()).min(1, 'Required minimum of 1 gerne'),
+  tagline: Yup.string().required('Required field'),
+  overview: Yup.string().required('Required field'),
+  runtime: Yup.number().min(0, 'Should be positive').required('Required field'),
+  vote_average: Yup.number().min(0, 'Should be positive'),
+  vote_count: Yup.number().min(0, 'Should be positive'),
+  budget: Yup.number().min(0, 'Should be positive'),
+  revenue: Yup.number().min(0, 'Should be positive'),
+});
 
-class Modal extends React.Component<IModalProps, IModalState> {
-  constructor(props: IModalProps) {
-    super(props);
-    this.state = {
-      title: this.props.data?.title || "",
-      release_date: this.props.data?.release_date || "",
-      poster_path: this.props.data?.poster_path || "",
-      genres: this.props.data?.genres ? [...this.props.data?.genres] : [],
-      overview: this.props.data?.overview || "",
-      runtime: this.props.data?.runtime || "",
-      isSelectorOpen: false,
-    };
-  }
-
-  componentDidMount() {
+const Modal = ({modalTitle, data, modalType, onClose}: IModalProps): React.ReactElement => {
+  const allCategories = modalType === "Add" ? ["Documentary", "Comedy", "Action", "Horror", "Crime"] : [...data.genres];
+  const dispatch = useDispatch();
+  const [isSelectorOpen, setSelectorOpen] = useState(false);
+  useEffect(() => {
     document.body.style.overflow = "hidden";
-  }
+    return () => {
+      document.body.style.overflow = "auto"
+    };
+  }, []);
 
-  componentWillUnmount() {
-    document.body.style.overflow = "auto";
-  }
-
-  handleChange(event: React.ChangeEvent<HTMLInputElement>): void {
-    const { name, value } = event.target;
-    this.setState((prevState) => ({ ...prevState, [name]: value }));
-  }
-
-  handleCheckboxChange(event: React.ChangeEvent<HTMLInputElement>): void {
-    if (event.target.checked) {
-      this.setState({
-        genres: [...this.state.genres, event.target.nextSibling.nodeValue],
-      });
-    } else {
-      this.setState({
-        genres: this.state.genres.filter(
-          (el) => el !== event.target.nextSibling.nodeValue
-        ),
-      });
-    }
-  }
-
-  handleSubmit(event: React.MouseEvent<HTMLButtonElement>) {
-    event.preventDefault();
-    const data = {
-      title: this.state.title,
-      release_date: this.state.release_date,
-      poster_path: this.state.poster_path,
-      genres: this.state.genres,
-      overview: this.state.overview,
-      runtime: Number(this.state.runtime),
-      tagline: this.props.data?.tagline || "can't be empty",
-      vote_average: this.props.data?.vote_average || 0,
-      vote_count: this.props.data?.vote_count || 0,
-      budget: this.props.data?.budget || 0,
-      revenue: this.props.data?.revenue || 0,
-    }
-    if (this.props.modalType === "Edit") {
-      const dataWithId = { ...data, id: this.props.data.id } 
-      this.props.updateMovie(dataWithId);
-    } else {
-      this.props.createMovie(data);
-    }
-    this.props.onClose();
-  }
-
-  resetForm(event: React.ChangeEvent<HTMLInputElement>) {
-    event.preventDefault();
-    this.setState({
-      title: "",
-      release_date: "",
-      poster_path: "",
-      genres: [],
-      overview: "",
-      runtime: "",
-    });
-  }
-
-  render() {
-    return (
-      <div className={styles.overlay} onClick={this.props.onClose}>
-        <form
-          className={styles.modal}
-          autoComplete="off"
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        >
-          <Button
-            text={""}
-            className={styles.closeBtn}
-            onClick={this.props.onClose}
-          />
-          <h2 className={styles.h2}>{this.props.modalTitle}</h2>
-          {this.props.modalType === "Edit" && (
-            <label className={styles.label}>
-              Movie ID
-              <input
-                className={styles.input}
-                type="text"
-                name="id"
-                value={this.props.data?.id}
-                disabled
-              />
-            </label>
-          )}
-          {this.props.modalType !== "Delete" && (
-            <>
-              <label className={styles.label}>
-                Title
-                <input
-                  className={styles.input}
-                  type="text"
-                  name="title"
-                  value={this.state.title}
-                  placeholder="Title here"
-                  onChange={(e) => this.handleChange(e)}
-                />
-              </label>
-              <label className={styles.label}>
-                Release Date
-                <input
-                  className={styles.input}
-                  type="text"
-                  name="release_date"
-                  value={this.state.release_date}
-                  placeholder="Select Date"
-                  onChange={(e) => this.handleChange(e)}
-                />
-              </label>
-              <label className={styles.label}>
-                Movie URL
-                <input
-                  className={styles.input}
-                  type="text"
-                  name="poster_path"
-                  value={this.state.poster_path}
-                  placeholder="Movie URL here"
-                  onChange={(e) => this.handleChange(e)}
-                />
-              </label>
-              <label className={classNames(styles.label, styles.selector)}>
-                Genre
-                <input
-                  className={styles.input}
-                  type="text"
+  const onDeleteMovie = (id: number) => dispatch(deleteMovie(id));
+  const onUpdateMovie = (data: MovieDataType) => dispatch(updateMovie(data));
+  const onCreateMovie = (data: MovieWithOutIdDataType) => dispatch(createMovie(data));
+  return (
+    <div className={styles.overlay} onClick={onClose}>
+      <Formik
+        initialValues={{
+          id: data?.id || 0,
+          title: data?.title || "",
+          release_date: data?.release_date || "",
+          poster_path: data?.poster_path || "",
+          genres: data?.genres ? [...data?.genres] : [],
+          tagline: data?.tagline || "",
+          overview: data?.overview || "",
+          runtime: data?.runtime || 0,
+          vote_average: data?.vote_average || 0,
+          vote_count: data?.vote_count || 0,
+          budget: data?.budget || 0,
+          revenue: data?.revenue || 0,
+        }}
+        onSubmit={values => {
+          switch (modalType) {
+            case "Add":
+              onCreateMovie(values);
+              onClose();
+              break;
+            case "Edit":
+              onUpdateMovie(values);
+              onClose();
+              break;
+            case "Delete":
+              onDeleteMovie(values.id);
+              onClose();
+              break;
+            default:
+              onClose();
+          }
+        }}
+        validationSchema={ValidationSchema}
+      >
+        {({ errors, touched, values }: FormikProps<Values>) => (
+         <Form className={styles.modal} autoComplete="off" onClick={e => e.stopPropagation()}>
+           <Button
+              text={""}
+              className={styles.closeBtn}
+              onClick={onClose}
+            />
+            <h2 className={styles.h2}>{modalTitle}</h2>
+            {modalType === "Edit" && (
+              <FormInputField name="id" label="Movie ID" disabled={true} type="number"/>
+            )}
+            {modalType !== "Delete" && (
+              <>
+                <FormInputField name="title" label="Title" placeholder="Title here" />
+                <FormInputField name="release_date" type="date" label="Release Date" placeholder="Select Date" />
+                <FormInputField name="poster_path" label="Movie URL" placeholder="Movie URL here" />
+                <CheckboxSelect 
                   name="genres"
-                  value={this.state.genres.join(", ")}
+                  label="Genre"
                   placeholder="Select Gerne"
-                  onChange={(e) => e.preventDefault()}
-                  onClick={() =>
-                    this.setState({
-                      isSelectorOpen: !this.state.isSelectorOpen,
-                    })
-                  }
+                  selectedOptions={values.genres}
+                  optionsList={allCategories}
+                  isOpen={isSelectorOpen}
+                  toggleOptionsList={() => setSelectorOpen(!isSelectorOpen)}
                 />
-                {this.state.isSelectorOpen && (
-                  <ul className={styles.optionList}>
-                    {allCategories.map((el, idx) => (
-                      <li key={idx}>
-                        <label>
-                          <input
-                            type="checkbox"
-                            checked={
-                              this.state.genres.findIndex(
-                                (elem) => elem === el
-                              ) !== -1
-                            }
-                            onChange={(e) => this.handleCheckboxChange(e)}
-                          />
-                          {el}
-                        </label>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </label>
-              <label className={styles.label}>
-                Overview
-                <input
-                  className={styles.input}
-                  type="text"
-                  name="overview"
-                  value={this.state.overview}
-                  placeholder="Select here"
-                  onChange={(e) => this.handleChange(e)}
-                />
-              </label>
-              <label className={styles.label}>
-                Runtime
-                <input
-                  className={styles.input}
-                  type="number"
-                  name="runtime"
-                  value={this.state.runtime}
-                  placeholder="Runtime here"
-                  onChange={(e) => this.handleChange(e)}
-                />
-              </label>
-              <Button
-                text={"Reset"}
-                className={styles.resetBtn}
-                onClick={(e) => this.resetForm(e)}
-              />
-              <Button
-                text={"Submit"}
-                className={styles.submitBtn}
-                onClick={(e) => this.handleSubmit(e)}
-              />
-            </>
-          )}
-          {this.props.modalType === "Delete" && (
+                {errors.genres ? <div className="error">{errors.genres}</div> : null}
+                <FormInputField name="tagline" label="Tagline" placeholder="Tagline here" />
+                <FormInputField name="overview" label="Overview" placeholder="Overview here" />
+                <FormInputField name="runtime" type="number" label="Runtime" placeholder="Runtime here" />
+                <FormInputField name="vote_average" type="number" label="Vote Average" placeholder="Vote Average here" />
+                <FormInputField name="vote_count" type="number" label="Vote Count" placeholder="Vote Count here" />
+                <FormInputField name="budget" type="number" label="Budget" placeholder="Budget here" />
+                <FormInputField name="revenue" type="number" label="Revenue" placeholder="Revenue here" />
+                <Button text={"Reset"} className={styles.resetBtn} type="reset" />
+                <Button text={"Submit"} className={styles.submitBtn} type="submit" />
+              </>
+            )}
+            {modalType === "Delete" && (
             <>
               <p className={styles.paragraph}>
                 Are you sure you want delete this movie?
               </p>
-              <Button
-                text={"Confirm"}
-                className={styles.submitBtn}
-                onClick={(e) => {
-                  e.preventDefault();
-                  this.props.deleteMovie(this.props.data.id);
-                  this.props.onClose();
-                }}
-              />
+              <Button text={"Confirm"} className={styles.submitBtn} type="submit" />
             </>
           )}
-        </form>
-      </div>
-    );
-  }
+          </Form>
+        )}
+      </Formik>
+    </div>
+  );
 }
 
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    deleteMovie: (id: number) => dispatch(deleteMovie(id)),
-    updateMovie: (data: MovieDataType) => dispatch(updateMovie(data)),
-    createMovie: (data: MovieWithOutIdDataType) => dispatch(createMovie(data)),
-  };
-};
-
-export default connect(null, mapDispatchToProps)(Modal);
+export default Modal;
