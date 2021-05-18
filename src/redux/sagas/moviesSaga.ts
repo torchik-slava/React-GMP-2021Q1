@@ -1,20 +1,39 @@
-import { takeEvery, all, call, put, select } from 'redux-saga/effects';
-import { createMovie, deleteMovie, getMovieById, getMoviesBySearchQuery, updateMovie } from '../../api';
-import { movieByIdRequestSuccess, moviesRequestSuccess } from '../actions';
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { takeEvery, all, call, put, select } from "redux-saga/effects";
+import {
+  createMovie,
+  deleteMovie,
+  getMovieById,
+  getMoviesBySearchQuery,
+  updateMovie,
+} from "../../api";
+import { movieByIdRequestSuccess, moviesRequestSuccess } from "../actions";
 import { AppState, MovieDataType, ResponseType } from "../../model";
 import * as types from "../actions/types";
 
 function* getMoviesSaga() {
   try {
-    const searchQuery: string = yield select((state: AppState) => state.movies.searchValue);
-    const sortParam: string = yield select((state: AppState) => state.movies.currentSort.key);
-    const gernesMap: { [key: string]: boolean } = yield select((state: AppState) => state.movies.gernes);
+    const searchQuery: string = yield select(
+      (state: AppState) => state.movies.searchValue
+    );
+    const sortParam: string = yield select(
+      (state: AppState) => state.movies.currentSort.key
+    );
+    const gernesMap: { [key: string]: boolean } = yield select(
+      (state: AppState) => state.movies.gernes
+    );
     const filterParam = Object.entries(gernesMap)
       .slice(1)
       .filter((gerneEntries: [string, boolean]) => gerneEntries[1])
       .map((gerneEntries: [string, boolean]) => gerneEntries[0])
       .join(",");
-    const data: ResponseType = yield call(getMoviesBySearchQuery, searchQuery.trim(), sortParam, filterParam);
+    const data: ResponseType = yield call(
+      getMoviesBySearchQuery,
+      searchQuery.trim(),
+      sortParam,
+      filterParam
+    );
     yield put(moviesRequestSuccess(data));
   } catch (error) {
     console.log(error);
@@ -63,7 +82,14 @@ function* deleteMovieSaga(action: any) {
 }
 
 function* watchGetMovies() {
-  yield takeEvery([types.REQUEST_MOVIES_BY_SEARCH, types.SET_CURRENT_SORT, types.SET_GERNE_FILTER], getMoviesSaga);
+  yield takeEvery(
+    [
+      types.REQUEST_MOVIES_BY_SEARCH,
+      types.SET_CURRENT_SORT,
+      types.SET_GERNE_FILTER,
+    ],
+    getMoviesSaga
+  );
 }
 
 function* watchGetMovieById() {
@@ -83,5 +109,11 @@ function* watchDeleteMovie() {
 }
 
 export default function* root() {
-  yield all([watchGetMovies(), watchGetMovieById(), watchCreateMovie(), watchUpdateMovie(), watchDeleteMovie()]);
+  yield all([
+    watchGetMovies(),
+    watchGetMovieById(),
+    watchCreateMovie(),
+    watchUpdateMovie(),
+    watchDeleteMovie(),
+  ]);
 }

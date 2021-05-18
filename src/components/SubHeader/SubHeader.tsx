@@ -20,7 +20,8 @@ const SubHeader = ({
   const history = useHistory();
   const { searchValue } = useSelector((state: AppState) => state.movies);
   const showSearch = () => history.push(`/search?${searchValue}`);
-  const onModalOpen = (modalType: AppState["modal"]["modalType"]) => dispatch(openModal(modalType));
+  const onModalOpen = (modalType: AppState["modal"]["modalType"]) =>
+    dispatch(openModal(modalType));
 
   return (
     <div className={styles.subHeader}>

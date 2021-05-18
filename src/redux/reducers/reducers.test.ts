@@ -9,6 +9,7 @@ import {
 import * as types from "../actions/types";
 import { ActionType } from "../../model";
 import mockResponse from "../../assets/response.json";
+
 describe("Modal reducer", () => {
   it("should return the initial state", () => {
     expect(modalReducer(undefined, {} as ActionType)).toEqual(
@@ -136,19 +137,19 @@ describe("Movie reducer", () => {
       selectedMovieId: 0,
       gernes: {
         ...state.gernes,
-        "All": false,
-        "Drama": true,
+        All: false,
+        Drama: true,
       },
     });
   });
-  it("should handle SET_GERNE_FILTER", () => {
+  it("should handle SET_GERNE_FILTER with ALL flag", () => {
     const state = { ...initialStateMoveiReducer };
     state.selectedMovieId = mockResponse.data[0].id;
     state.gernes = {
       ...initialStateMoveiReducer.gernes,
-      "All": false,
-      "Drama": true,
-      "Comedy": true,
+      All: false,
+      Drama: true,
+      Comedy: true,
     };
     expect(
       moviesReducer(state, {

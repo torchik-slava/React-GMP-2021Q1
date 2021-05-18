@@ -6,7 +6,10 @@ export const initialState: IModalReducerState = {
   movieIdx: null,
 };
 
-export const modalReducer = (state = initialState, action: ActionType) => {
+export const modalReducer = (
+  state = initialState,
+  action: ActionType
+): IModalReducerState => {
   switch (action.type) {
     case "OPEN_MODAL":
       return {

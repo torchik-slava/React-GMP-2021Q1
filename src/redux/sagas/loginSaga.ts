@@ -1,6 +1,8 @@
-import { takeEvery, all } from 'redux-saga/effects';
+import { takeEvery, all } from "redux-saga/effects";
 
-function* loginSaga() {}
+function* loginSaga() {
+  // todo
+}
 
 function* watchLogin() {
   yield takeEvery("LOGIN", loginSaga);

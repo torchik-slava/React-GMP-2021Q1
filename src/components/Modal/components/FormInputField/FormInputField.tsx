@@ -10,17 +10,20 @@ interface IFormInputFieldProps {
   disabled?: boolean;
 }
 
-const FormInputField = (props: IFormInputFieldProps) => {
-  const [field, meta, helpers] = useField(props);
+const FormInputField = (props: IFormInputFieldProps): React.ReactElement => {
+  const { label, type, disabled, placeholder } = props;
+  const [field, meta] = useField(props);
   return (
     <>
-      <label className={styles.label}>
-        {props.label}
+      <label className={styles.label} htmlFor={label}>
+        {label}
         <input
+          id={label}
           className={styles.input}
-          type={props.type || "text"}
-          disabled={props.disabled}
-          placeholder={props.placeholder}
+          type={type || "text"}
+          disabled={disabled}
+          placeholder={placeholder}
+          // PATTERN: Destructuring Arguments
           {...field}
           {...props}
         />

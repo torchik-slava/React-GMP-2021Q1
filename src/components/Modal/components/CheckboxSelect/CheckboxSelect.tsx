@@ -1,16 +1,16 @@
 import React from "react";
-import styles from "../../Modal.module.scss";
 import classNames from "classnames";
 import { FieldArray } from "formik";
+import styles from "../../Modal.module.scss";
 
 interface ICheckboxSelectProps {
   name: string;
   label?: string;
   placeholder?: string;
   selectedOptions: Array<string>;
-	optionsList: Array<string>
+  optionsList: Array<string>;
   isOpen: boolean;
-	toggleOptionsList: () => void;
+  toggleOptionsList: () => void;
 }
 
 const CheckboxSelect = ({
@@ -18,14 +18,18 @@ const CheckboxSelect = ({
   label,
   placeholder,
   selectedOptions,
-	optionsList,
+  optionsList,
   isOpen,
-	toggleOptionsList,
-}: ICheckboxSelectProps) => {
+  toggleOptionsList,
+}: ICheckboxSelectProps): React.ReactElement => {
   return (
-    <label className={classNames(styles.label, styles.selector)}>
+    <label
+      className={classNames(styles.label, styles.selector)}
+      htmlFor={label}
+    >
       {label}
       <input
+        id={label}
         className={styles.input}
         type="text"
         name={name}
@@ -39,10 +43,11 @@ const CheckboxSelect = ({
           name={name}
           render={(arrayHelpers) => (
             <ul className={styles.optionList}>
-              {optionsList.map((option) => (
+              {optionsList.map((option, index) => (
                 <li key={option}>
-                  <label>
+                  <label htmlFor={`${option}${index}`}>
                     <input
+                      id={`${option}${index}`}
                       name={name}
                       type="checkbox"
                       value={option}

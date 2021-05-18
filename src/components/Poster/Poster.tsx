@@ -4,12 +4,14 @@ const defaultUrl = "https://i.ibb.co/hmtBmhz/no-poster.jpg";
 
 interface ICardDetails {
   posterPath: string;
-  className: any;
+  className: string;
+  width: string;
 }
 
 const Poster = ({
   posterPath,
   className,
+  width,
 }: ICardDetails): React.ReactElement => {
   const [url, setUrl] = useState(posterPath);
 
@@ -23,6 +25,7 @@ const Poster = ({
       src={url}
       onError={() => setUrl(defaultUrl)}
       alt="poster"
+      width={width}
     />
   );
 };

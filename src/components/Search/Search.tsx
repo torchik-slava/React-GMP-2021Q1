@@ -7,8 +7,11 @@ import styles from "./Search.module.scss";
 
 const Search = (): React.ReactElement => {
   const dispatch = useDispatch();
-  const searchValue = useSelector((state: AppState) => state.movies.searchValue);
-  const changeSearchValue = (event: React.ChangeEvent<HTMLInputElement>) => dispatch(setSearchValue(event.target.value));
+  const searchValue = useSelector(
+    (state: AppState) => state.movies.searchValue
+  );
+  const changeSearchValue = (event: React.ChangeEvent<HTMLInputElement>) =>
+    dispatch(setSearchValue(event.target.value));
 
   return (
     <div className={styles.search}>

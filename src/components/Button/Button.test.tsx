@@ -11,7 +11,7 @@ describe("Button", () => {
 
   it("calls onClick callback on Button click", () => {
     const onClick = jest.fn();
-    render(<Button text="My Btn" onClick={onClick}/>);
+    render(<Button text="My Btn" onClick={onClick} />);
     expect(onClick).toHaveBeenCalledTimes(0);
     userEvent.click(screen.getByRole("button"));
     expect(onClick).toHaveBeenCalledTimes(1);

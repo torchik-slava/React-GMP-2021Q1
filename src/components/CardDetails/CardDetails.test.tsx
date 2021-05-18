@@ -1,11 +1,22 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import CardDetails from "./CardDetails";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
-import mockStore from '../../../__mocks__/storeMock';
+import createSagaMiddleware from "redux-saga";
+import configureStore from "redux-mock-store";
+import CardDetails from "./CardDetails";
 import mockResponse from "../../assets/response.json";
+import { MovieDataType } from "../../model";
+
+const mockStore = (initialState: {
+  movies: { selectedMovie: MovieDataType };
+}) => {
+  const middlewares = [createSagaMiddleware()];
+  const createMockStore = configureStore(middlewares);
+  const store = createMockStore(initialState);
+  return store;
+};
 
 const initialState = {
   movies: {

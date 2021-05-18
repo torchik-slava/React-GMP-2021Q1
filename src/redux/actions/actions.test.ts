@@ -18,7 +18,7 @@ describe("Actions", () => {
     expect(actions.moviesRequestSuccess(response)).toEqual(expectedAction);
   });
   it("should create requestMovieById action", () => {
-    const id = mockResponse.data[0].id;
+    const { id } = mockResponse.data[0];
     const expectedAction = {
       type: types.REQUEST_MOVIE_BY_ID,
       payload: id,
@@ -83,7 +83,7 @@ describe("Actions", () => {
     expect(actions.updateMovie(data)).toEqual(expectedAction);
   });
   it("should create deleteMovie action", () => {
-    const id = mockResponse.data[0].id;
+    const { id } = mockResponse.data[0];
     const expectedAction = {
       type: types.DELETE_MOVIE,
       payload: id,

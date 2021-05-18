@@ -3,9 +3,9 @@ import React from "react";
 import Footer from "../components/Footer";
 import NotFoundComponent from "../components/NotFound";
 import SubHeader from "../components/SubHeader";
-import styles from "./Pages.module.scss";
+import styles from "./Layout.module.scss";
 
-const NotFoundPage = () => {
+const NotFoundPage = (): React.ReactElement => {
   return (
     <>
       <main className={classNames(styles.main, styles.with_not_found)}>
