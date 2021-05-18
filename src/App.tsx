@@ -1,11 +1,20 @@
 import React from "react";
-import HomePage from "./containers";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import HomePage from "./layouts/HomePage";
+import MovieDetailsPage from "./layouts/MovieDetailsPage";
+import NotFoundPage from "./layouts/NotFoundPage";
+import SearchResultPage from "./layouts/SearchResultPage";
 
 const App = () => {
   return (
-    <>
-      <HomePage />
-    </>
+    <Router>
+      <Switch>
+        <Route path="/" exact component={HomePage} />
+        <Route path="/search" component={SearchResultPage} />
+        <Route path="/film/:id" component={MovieDetailsPage} />
+        <Route component={NotFoundPage} />
+      </Switch>
+    </Router>
   );
 };
 

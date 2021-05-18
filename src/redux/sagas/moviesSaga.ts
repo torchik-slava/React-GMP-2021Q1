@@ -1,7 +1,7 @@
 import { takeEvery, all, call, put, select } from 'redux-saga/effects';
-import { createMovie, deleteMovie, getMoviesBySearchQuery, updateMovie } from '../../api';
-import { moviesRequestSuccess } from '../actions';
-import { AppState, ResponseType } from "../../model";
+import { createMovie, deleteMovie, getMovieById, getMoviesBySearchQuery, updateMovie } from '../../api';
+import { movieByIdRequestSuccess, moviesRequestSuccess } from '../actions';
+import { AppState, MovieDataType, ResponseType } from "../../model";
 import * as types from "../actions/types";
 
 function* getMoviesSaga() {
@@ -16,6 +16,16 @@ function* getMoviesSaga() {
       .join(",");
     const data: ResponseType = yield call(getMoviesBySearchQuery, searchQuery.trim(), sortParam, filterParam);
     yield put(moviesRequestSuccess(data));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function* getMovieByIdSaga(action: any) {
+  try {
+    const id = action.payload;
+    const data: MovieDataType = yield call(getMovieById, id);
+    yield put(movieByIdRequestSuccess(data));
   } catch (error) {
     console.log(error);
   }
@@ -56,6 +66,10 @@ function* watchGetMovies() {
   yield takeEvery([types.REQUEST_MOVIES_BY_SEARCH, types.SET_CURRENT_SORT, types.SET_GERNE_FILTER], getMoviesSaga);
 }
 
+function* watchGetMovieById() {
+  yield takeEvery(types.REQUEST_MOVIE_BY_ID, getMovieByIdSaga);
+}
+
 function* watchCreateMovie() {
   yield takeEvery(types.CREATE_MOVIE, createMovieSaga);
 }
@@ -69,5 +83,5 @@ function* watchDeleteMovie() {
 }
 
 export default function* root() {
-  yield all([watchGetMovies(), watchCreateMovie(), watchUpdateMovie(), watchDeleteMovie()]);
+  yield all([watchGetMovies(), watchGetMovieById(), watchCreateMovie(), watchUpdateMovie(), watchDeleteMovie()]);
 }

@@ -10,6 +10,16 @@ export const moviesRequestSuccess = (response: ResponseType) => ({
   payload: response,
 } as const);
 
+export const requestMovieById = (id: string) => ({
+  type: types.REQUEST_MOVIE_BY_ID,
+  payload: id,
+} as const);
+
+export const movieByIdRequestSuccess = (response: MovieDataType) => ({
+  type: types.MOVIE_BY_ID_REQUEST_SUCCESS,
+  payload: response,
+} as const);
+
 export const setSearchValue = (searchValue: string) => ({
   type: types.SET_SEARCH_VALUE,
   payload: searchValue,

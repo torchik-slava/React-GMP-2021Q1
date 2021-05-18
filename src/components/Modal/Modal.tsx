@@ -1,20 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Form, Formik, FormikProps } from "formik";
 import * as Yup from 'yup';
-import { MovieDataType, MovieWithOutIdDataType } from "../../model";
-import { createMovie, deleteMovie, updateMovie } from "../../redux/actions";
+import { AppState, MovieDataType, MovieWithOutIdDataType } from "../../model";
+import { createMovie, deleteMovie, updateMovie, closeModal } from "../../redux/actions";
 import Button from "../Button";
 import styles from "./Modal.module.scss";
 import FormInputField from "./components/FormInputField";
 import CheckboxSelect from "./components/CheckboxSelect";
-
-interface IModalProps {
-  modalTitle: string;
-  data?: MovieDataType;
-  modalType: "Add" | "Edit" | "Delete" | "";
-  onClose: () => void;
-}
 
 interface Values {
   id: number;
@@ -46,106 +39,118 @@ const ValidationSchema = Yup.object().shape({
   revenue: Yup.number().min(0, 'Should be positive'),
 });
 
-const Modal = ({modalTitle, data, modalType, onClose}: IModalProps): React.ReactElement => {
-  const allCategories = modalType === "Add" ? ["Documentary", "Comedy", "Action", "Horror", "Crime"] : [...data.genres];
-  const dispatch = useDispatch();
+const Modal = () => {
+  const { isOpen: isModalOpen, modalType, movieIdx } = useSelector((state: AppState) => state.modal);
+  const data = useSelector((state: AppState) => state.movies.movies[movieIdx]);  
+  const allCategories = (modalType === "Add") || !data ? ["Documentary", "Comedy", "Action", "Horror", "Crime"] : [...data?.genres];
+
   const [isSelectorOpen, setSelectorOpen] = useState(false);
   useEffect(() => {
-    document.body.style.overflow = "hidden";
+    if (isModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    };    
     return () => {
       document.body.style.overflow = "auto"
     };
-  }, []);
+  });
 
+  const dispatch = useDispatch();
   const onDeleteMovie = (id: number) => dispatch(deleteMovie(id));
   const onUpdateMovie = (data: MovieDataType) => dispatch(updateMovie(data));
   const onCreateMovie = (data: MovieWithOutIdDataType) => dispatch(createMovie(data));
+  const onClose = () => dispatch(closeModal());
   return (
-    <div className={styles.overlay} onClick={onClose}>
-      <Formik
-        initialValues={{
-          id: data?.id || 0,
-          title: data?.title || "",
-          release_date: data?.release_date || "",
-          poster_path: data?.poster_path || "",
-          genres: data?.genres ? [...data?.genres] : [],
-          tagline: data?.tagline || "",
-          overview: data?.overview || "",
-          runtime: data?.runtime || 0,
-          vote_average: data?.vote_average || 0,
-          vote_count: data?.vote_count || 0,
-          budget: data?.budget || 0,
-          revenue: data?.revenue || 0,
-        }}
-        onSubmit={values => {
-          switch (modalType) {
-            case "Add":
-              onCreateMovie(values);
-              onClose();
-              break;
-            case "Edit":
-              onUpdateMovie(values);
-              onClose();
-              break;
-            case "Delete":
-              onDeleteMovie(values.id);
-              onClose();
-              break;
-            default:
-              onClose();
-          }
-        }}
-        validationSchema={ValidationSchema}
-      >
-        {({ errors, touched, values }: FormikProps<Values>) => (
-         <Form className={styles.modal} autoComplete="off" onClick={e => e.stopPropagation()}>
-           <Button
-              text={""}
-              className={styles.closeBtn}
-              onClick={onClose}
-            />
-            <h2 className={styles.h2}>{modalTitle}</h2>
-            {modalType === "Edit" && (
-              <FormInputField name="id" label="Movie ID" disabled={true} type="number"/>
-            )}
-            {modalType !== "Delete" && (
-              <>
-                <FormInputField name="title" label="Title" placeholder="Title here" />
-                <FormInputField name="release_date" type="date" label="Release Date" placeholder="Select Date" />
-                <FormInputField name="poster_path" label="Movie URL" placeholder="Movie URL here" />
-                <CheckboxSelect 
-                  name="genres"
-                  label="Genre"
-                  placeholder="Select Gerne"
-                  selectedOptions={values.genres}
-                  optionsList={allCategories}
-                  isOpen={isSelectorOpen}
-                  toggleOptionsList={() => setSelectorOpen(!isSelectorOpen)}
+    <>
+      {isModalOpen && (
+        <div className={styles.overlay} onClick={onClose}>
+          <Formik
+            initialValues={{
+              id: data?.id || 0,
+              title: data?.title || "",
+              release_date: data?.release_date || "",
+              poster_path: data?.poster_path || "",
+              genres: data?.genres ? [...data?.genres] : [],
+              tagline: data?.tagline || "",
+              overview: data?.overview || "",
+              runtime: data?.runtime || 0,
+              vote_average: data?.vote_average || 0,
+              vote_count: data?.vote_count || 0,
+              budget: data?.budget || 0,
+              revenue: data?.revenue || 0,
+            }}
+            onSubmit={values => {
+              switch (modalType) {
+                case "Add":
+                  onCreateMovie(values);
+                  onClose();
+                  break;
+                case "Edit":
+                  onUpdateMovie(values);
+                  onClose();
+                  break;
+                case "Delete":
+                  onDeleteMovie(values.id);
+                  onClose();
+                  break;
+                default:
+                  onClose();
+              }
+            }}
+            validationSchema={ValidationSchema}
+          >
+            {({ errors, touched, values }: FormikProps<Values>) => (
+            <Form className={styles.modal} autoComplete="off" onClick={e => e.stopPropagation()}>
+              <Button
+                  text={""}
+                  className={styles.closeBtn}
+                  onClick={onClose}
                 />
-                {errors.genres ? <div className="error">{errors.genres}</div> : null}
-                <FormInputField name="tagline" label="Tagline" placeholder="Tagline here" />
-                <FormInputField name="overview" label="Overview" placeholder="Overview here" />
-                <FormInputField name="runtime" type="number" label="Runtime" placeholder="Runtime here" />
-                <FormInputField name="vote_average" type="number" label="Vote Average" placeholder="Vote Average here" />
-                <FormInputField name="vote_count" type="number" label="Vote Count" placeholder="Vote Count here" />
-                <FormInputField name="budget" type="number" label="Budget" placeholder="Budget here" />
-                <FormInputField name="revenue" type="number" label="Revenue" placeholder="Revenue here" />
-                <Button text={"Reset"} className={styles.resetBtn} type="reset" />
-                <Button text={"Submit"} className={styles.submitBtn} type="submit" />
-              </>
+                <h2 className={styles.h2}>{`${modalType} Movie`}</h2>
+                {modalType === "Edit" && (
+                  <FormInputField name="id" label="Movie ID" disabled={true} type="number"/>
+                )}
+                {modalType !== "Delete" && (
+                  <>
+                    <FormInputField name="title" label="Title" placeholder="Title here" />
+                    <FormInputField name="release_date" type="date" label="Release Date" placeholder="Select Date" />
+                    <FormInputField name="poster_path" label="Movie URL" placeholder="Movie URL here" />
+                    <CheckboxSelect 
+                      name="genres"
+                      label="Genre"
+                      placeholder="Select Gerne"
+                      selectedOptions={values.genres}
+                      optionsList={allCategories}
+                      isOpen={isSelectorOpen}
+                      toggleOptionsList={() => setSelectorOpen(!isSelectorOpen)}
+                    />
+                    {errors.genres ? <div className="error">{errors.genres}</div> : null}
+                    <FormInputField name="tagline" label="Tagline" placeholder="Tagline here" />
+                    <FormInputField name="overview" label="Overview" placeholder="Overview here" />
+                    <FormInputField name="runtime" type="number" label="Runtime" placeholder="Runtime here" />
+                    <FormInputField name="vote_average" type="number" label="Vote Average" placeholder="Vote Average here" />
+                    <FormInputField name="vote_count" type="number" label="Vote Count" placeholder="Vote Count here" />
+                    <FormInputField name="budget" type="number" label="Budget" placeholder="Budget here" />
+                    <FormInputField name="revenue" type="number" label="Revenue" placeholder="Revenue here" />
+                    <Button text={"Reset"} className={styles.resetBtn} type="reset" />
+                    <Button text={"Submit"} className={styles.submitBtn} type="submit" />
+                  </>
+                )}
+                {modalType === "Delete" && (
+                <>
+                  <p className={styles.paragraph}>
+                    Are you sure you want delete this movie?
+                  </p>
+                  <Button text={"Confirm"} className={styles.submitBtn} type="submit" />
+                </>
+              )}
+              </Form>
             )}
-            {modalType === "Delete" && (
-            <>
-              <p className={styles.paragraph}>
-                Are you sure you want delete this movie?
-              </p>
-              <Button text={"Confirm"} className={styles.submitBtn} type="submit" />
-            </>
-          )}
-          </Form>
-        )}
-      </Formik>
-    </div>
+          </Formik>
+        </div>
+      )}
+    </>
   );
 }
 

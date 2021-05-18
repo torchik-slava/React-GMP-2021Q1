@@ -10,6 +10,7 @@ export interface IMoviesReducerState {
   movies: Array<MovieDataType>;
   resultsAmount: number;
   selectedMovieId: number;
+  selectedMovie: MovieDataType;
   currentSort: {
     name: string;
     key: string;
