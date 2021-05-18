@@ -10,7 +10,7 @@ export const moviesRequestSuccess = (response: ResponseType) => ({
   payload: response,
 } as const);
 
-export const requestMovieById = (id: string) => ({
+export const requestMovieById = (id: number) => ({
   type: types.REQUEST_MOVIE_BY_ID,
   payload: id,
 } as const);

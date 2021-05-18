@@ -94,14 +94,12 @@ const Modal = () => {
                   onDeleteMovie(values.id);
                   onClose();
                   break;
-                default:
-                  onClose();
               }
             }}
             validationSchema={ValidationSchema}
           >
             {({ errors, touched, values }: FormikProps<Values>) => (
-            <Form className={styles.modal} autoComplete="off" onClick={e => e.stopPropagation()}>
+            <Form className={styles.modal} aria-label="form" autoComplete="off" onClick={e => e.stopPropagation()}>
               <Button
                   text={""}
                   className={styles.closeBtn}
@@ -119,7 +117,7 @@ const Modal = () => {
                     <CheckboxSelect 
                       name="genres"
                       label="Genre"
-                      placeholder="Select Gerne"
+                      placeholder="Select Genre"
                       selectedOptions={values.genres}
                       optionsList={allCategories}
                       isOpen={isSelectorOpen}

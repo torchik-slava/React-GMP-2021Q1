@@ -1,6 +1,6 @@
 import { ActionType, IMoviesReducerState } from "../../model";
 
-const initialState: IMoviesReducerState = {
+export const initialState: IMoviesReducerState = {
   isLoading: false,
   searchValue: "",
   movies: [],

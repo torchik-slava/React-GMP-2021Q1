@@ -10,7 +10,7 @@ const CardDetails = () => {
   const { id }: { id: string } = useParams();
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(requestMovieById(id));
+    dispatch(requestMovieById(Number(id)));
   }, [id]);
 
   const { selectedMovie: data } = useSelector((state: AppState) => state.movies);
